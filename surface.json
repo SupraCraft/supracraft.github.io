@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "production_base_url": "https://supracraft.github.io/",
+  "routes": [
+    {
+      "id": "home",
+      "path": "/",
+      "title": "SupraCraft · Open-source systems and tooling"
+    },
+    {
+      "id": "accessibility",
+      "path": "/accessibility/",
+      "title": "Accessibility · SupraCraft"
+    }
+  ],
+  "machine_resources": [
+    "/organization.json",
+    "/surface.json",
+    "/llms.txt"
+  ],
+  "external_fallbacks": [
+    "https://github.com/orgs/SupraCraft/repositories",
+    "https://github.com/SupraCraft"
+  ]
+}

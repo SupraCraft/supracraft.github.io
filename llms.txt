@@ -1,0 +1,22 @@
+# SupraCraft
+
+Canonical organization hub: https://supracraft.github.io/
+GitHub organization: https://github.com/SupraCraft
+Public repository catalog: https://github.com/orgs/SupraCraft/repositories
+
+SupraCraft maintains open-source systems and tooling across multiple project domains.
+The organization hub provides orientation and discovery. Product-specific documentation,
+downloads, compatibility information, and task flows remain on each product's own public site.
+
+Machine-readable organization contract:
+https://supracraft.github.io/organization.json
+
+Machine-readable surface contract:
+https://supracraft.github.io/surface.json
+
+Navigation model:
+- project-internal navigation stays in the same browsing context;
+- navigation among SupraCraft-owned sites on supracraft.github.io stays in the same browsing context;
+- external handoffs are explicitly marked and preserve the current SupraCraft page in a new browsing context.
+
+Public discovery does not require private credentials.
