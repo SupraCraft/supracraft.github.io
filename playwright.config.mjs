@@ -10,13 +10,13 @@ export default defineConfig({
   expect: { timeout: 5_000 },
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
-  retries: process.env.CI ? 1 : 0,
+  retries: 0,
   reporter: process.env.CI
     ? [['line'], ['html', { outputFolder: 'build/playwright-report', open: 'never' }]]
     : 'list',
   use: {
     baseURL,
-    trace: 'retain-on-failure',
+    trace: 'off',
     screenshot: 'only-on-failure',
   },
   webServer: externalBaseURL
