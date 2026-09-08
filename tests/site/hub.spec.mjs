@@ -1,0 +1,156 @@
+import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+
+const siteBaseUrl = new URL(process.env.SITE_BASE_URL || 'http://127.0.0.1:4173/');
+const expectedOrigin = siteBaseUrl.origin;
+const routes = ['/', '/accessibility/'];
+
+function routeUrl(route) {
+  return new URL(route.replace(/^\/+/, ''), siteBaseUrl).toString();
+}
+
+async function assertNoHorizontalOverflow(page, label) {
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow, `${label} must not overflow horizontally`).toBeLessThanOrEqual(1);
+}
+
+async function assertA11y(page, label) {
+  const results = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa'])
+    .analyze();
+  expect(results.violations, `${label} axe violations: ${results.violations.map(v => v.id).join(', ')}`).toEqual([]);
+}
+
+async function assertThemeControl(page, label) {
+  const group = page.getByRole('group', { name: 'Theme' });
+  await expect(group, `${label} theme group`).toHaveCount(1);
+  for (const name of ['System', 'Light', 'Dark']) {
+    const radio = page.getByRole('radio', { name });
+    await expect(radio).toHaveCount(1);
+    const box = await radio.evaluate(node => {
+      const rect = node.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    });
+    expect(box.width).toBeGreaterThanOrEqual(44);
+    expect(box.height).toBeGreaterThanOrEqual(44);
+  }
+}
+
+async function assertLinkScopes(page, label) {
+  const anchors = await page.locator('a[href]').evaluateAll(nodes => nodes.map(node => ({
+    href: node.href,
+    target: node.getAttribute('target') || '',
+    rel: node.getAttribute('rel') || '',
+    className: node.className,
+    indicator: node.querySelector('.external-link-indicator')?.textContent?.trim() || '',
+    note: node.querySelector('.sr-only')?.textContent?.trim() || '',
+  })));
+
+  for (const anchor of anchors) {
+    const target = new URL(anchor.href);
+    if (target.hostname === 'supracraft.github.io' || target.origin === expectedOrigin) {
+      expect(anchor.target, `${label} organization-internal link must stay in the same context: ${anchor.href}`).toBe('');
+      expect(anchor.className.split(/\s+/)).not.toContain('external-link');
+    } else {
+      expect(anchor.className.split(/\s+/), `${label} external handoff must be marked: ${anchor.href}`).toContain('external-link');
+      expect(anchor.target).toBe('_blank');
+      const rel = new Set(anchor.rel.split(/\s+/).filter(Boolean));
+      expect(rel.has('noopener')).toBe(true);
+      expect(rel.has('noreferrer')).toBe(true);
+      expect(anchor.indicator).toBe('↗');
+      expect(anchor.note).toMatch(/opens in a new tab or window/i);
+    }
+  }
+}
+
+for (const route of routes) {
+  test(`${route} is a complete accessible organization page`, async ({ page }, testInfo) => {
+    await page.route('https://api.github.com/**', route => route.abort());
+    const response = await page.goto(routeUrl(route), { waitUntil: 'networkidle' });
+    expect(response?.status()).toBeLessThan(400);
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.locator('nav[aria-label="Primary"]')).toHaveCount(1);
+    await expect(page.locator('main#main-content')).toHaveCount(1);
+    await expect(page.locator('footer')).toHaveCount(1);
+    await expect(page.locator('a.skip-link[href="#main-content"]')).toHaveCount(1);
+    await assertThemeControl(page, `${testInfo.project.name} ${route}`);
+    await assertNoHorizontalOverflow(page, `${testInfo.project.name} ${route}`);
+    await assertLinkScopes(page, `${testInfo.project.name} ${route}`);
+    await assertA11y(page, `${testInfo.project.name} ${route} light/system`);
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await assertA11y(page, `${testInfo.project.name} ${route} dark/system`);
+  });
+}
+
+test('public repository discovery progressively enhances without private authority', async ({ page }) => {
+  await page.route('https://api.github.com/orgs/SupraCraft/repos**', async route => {
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify([
+        { name: 'Bridge', description: 'Bridge public description', language: 'Java', fork: true, archived: false, homepage: 'https://supracraft.github.io/Bridge/', html_url: 'https://github.com/SupraCraft/Bridge' },
+        { name: 'VanillaCord', description: 'VanillaCord public description', language: 'Java', fork: true, archived: false, homepage: '', html_url: 'https://github.com/SupraCraft/VanillaCord' },
+        { name: '.github', description: '', language: null, fork: false, archived: false, homepage: '', html_url: 'https://github.com/SupraCraft/.github' },
+        { name: 'supracraft.github.io', description: '', language: null, fork: false, archived: false, homepage: 'https://supracraft.github.io/', html_url: 'https://github.com/SupraCraft/supracraft.github.io' },
+        { name: 'ArchivedExample', description: '', language: null, fork: false, archived: true, homepage: '', html_url: 'https://github.com/SupraCraft/ArchivedExample' }
+      ])
+    });
+  });
+
+  await page.goto(routeUrl('/'), { waitUntil: 'networkidle' });
+  await expect(page.locator('.repo-item')).toHaveCount(2);
+  await expect(page.locator('.repo-item').filter({ hasText: 'Bridge' }).getByRole('link', { name: 'Project site' })).toHaveAttribute('href', 'https://supracraft.github.io/Bridge/');
+  const featuredBridgeSite = page.locator('[data-project="Bridge"] [data-live-project-site]');
+  await expect(featuredBridgeSite).toHaveAttribute('href', 'https://supracraft.github.io/Bridge/');
+  await expect(featuredBridgeSite).not.toHaveAttribute('target', '_blank');
+  await expect(page.getByText('2 current public repositories')).toBeVisible();
+  await assertLinkScopes(page, 'enhanced discovery');
+});
+
+test('GitHub API failure preserves static product discovery and native fallback', async ({ page }) => {
+  await page.route('https://api.github.com/**', route => route.abort());
+  await page.goto(routeUrl('/'), { waitUntil: 'networkidle' });
+  await expect(page.locator('[data-project="Bridge"]')).toBeVisible();
+  await expect(page.locator('[data-project="VanillaCord"]')).toBeVisible();
+  await expect(page.getByText(/Live metadata unavailable/)).toBeVisible();
+  await expect(page.getByRole('link', { name: /Browse the authoritative repository list on GitHub/ })).toBeVisible();
+});
+
+test('theme choice persists across organization routes', async ({ page }) => {
+  await page.route('https://api.github.com/**', route => route.abort());
+  await page.goto(routeUrl('/'));
+  await page.getByRole('radio', { name: 'Dark' }).check();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.goto(routeUrl('/accessibility/'));
+  await expect(page.getByRole('radio', { name: 'Dark' })).toBeChecked();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+});
+
+test('320px reflow keeps navigation and primary controls usable', async ({ page }) => {
+  await page.route('https://api.github.com/**', route => route.abort());
+  await page.setViewportSize({ width: 320, height: 800 });
+  for (const route of routes) {
+    await page.goto(routeUrl(route), { waitUntil: 'networkidle' });
+    await assertNoHorizontalOverflow(page, `320px ${route}`);
+    const controls = page.locator('nav[aria-label="Primary"] a, .theme-option, a.button');
+    const boxes = await controls.evaluateAll(nodes => nodes.map(node => {
+      const rect = node.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    }));
+    for (const box of boxes) {
+      expect(box.width).toBeGreaterThanOrEqual(24);
+      expect(box.height).toBeGreaterThanOrEqual(24);
+    }
+  }
+});
+
+test('desktop keyboard users can skip directly to main content', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('desktop-'), 'keyboard tab-order check applies to desktop browser projects');
+  await page.route('https://api.github.com/**', route => route.abort());
+  await page.goto(routeUrl('/'));
+  await page.evaluate(() => document.activeElement?.blur());
+  await page.keyboard.press('Tab');
+  await expect(page.locator('.skip-link')).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#main-content')).toBeFocused();
+});

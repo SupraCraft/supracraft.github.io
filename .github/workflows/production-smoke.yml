@@ -1,0 +1,57 @@
+name: production-smoke
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify deployed organization surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://supracraft.github.io'
+          routes=(
+            '/'
+            '/accessibility/'
+            '/organization.json'
+            '/surface.json'
+            '/llms.txt'
+            '/robots.txt'
+            '/sitemap.xml'
+          )
+          for route in "${routes[@]}"; do
+            echo "Checking ${base}${route}"
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              --location \
+              --retry 6 \
+              --retry-all-errors \
+              --retry-delay 5 \
+              --max-time 30 \
+              --output /tmp/supracraft-smoke-body \
+              "${base}${route}"
+            test -s /tmp/supracraft-smoke-body
+          done
+
+      - name: Verify deployed identity and machine contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location https://supracraft.github.io/ | grep -F 'Shared craftsmanship'
+          curl --fail --silent --show-error --location https://supracraft.github.io/organization.json | python3 -c "import json,sys; d=json.load(sys.stdin); assert d['organization']=='SupraCraft'; assert d['canonical_hub']=='https://supracraft.github.io/'; assert d['discovery']['private_credentials_required'] is False"
+          curl --fail --silent --show-error --location https://supracraft.github.io/surface.json | python3 -c "import json,sys; d=json.load(sys.stdin); assert d['production_base_url']=='https://supracraft.github.io/'"
