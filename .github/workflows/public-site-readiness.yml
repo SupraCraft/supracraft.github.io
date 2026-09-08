@@ -46,17 +46,19 @@ jobs:
       - name: Run Lighthouse budgets
         run: npm run site:lighthouse
 
-      - name: Check public links
+      - name: Check candidate-local and external links
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8
         with:
           lycheeVersion: v0.24.2
           args: >-
             --verbose
             --no-progress
+            --root-dir ${{ github.workspace }}
             --max-retries 2
             --timeout 20
             --accept 200,204,206,429
             --exclude '^http://127\.0\.0\.1(:[0-9]+)?/'
+            --exclude '^https://supracraft\.github\.io/'
             './README.md'
             './index.html'
             './404.html'
@@ -74,4 +76,4 @@ jobs:
             build/lighthouse
             lychee/out.md
           if-no-files-found: ignore
-          retention-days: 7
+          retention-days: 3
