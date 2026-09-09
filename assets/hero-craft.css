@@ -1,0 +1,127 @@
+.hero-craft {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 330px;
+}
+
+.hero-craft path,
+.hero-craft circle,
+.hero-craft rect {
+  vector-effect: non-scaling-stroke;
+}
+
+.craft-connections path,
+.craft-share path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.craft-human circle,
+.craft-human path {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.craft-agent circle {
+  fill: var(--surface);
+  stroke: #2E7D83;
+  stroke-width: 5;
+}
+
+.craft-agent path {
+  fill: none;
+  stroke: #2E7D83;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.craft-automation circle {
+  fill: var(--surface);
+  stroke: var(--primary);
+  stroke-width: 6;
+}
+
+.craft-automation path {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.craft-module rect:nth-of-type(1) {
+  fill: var(--primary);
+  stroke: var(--text);
+  stroke-width: 3;
+}
+
+.craft-module rect:nth-of-type(2) {
+  fill: #2E7D83;
+  stroke: var(--text);
+  stroke-width: 3;
+}
+
+.craft-module rect:nth-of-type(3) {
+  fill: var(--muted);
+  stroke: var(--text);
+  stroke-width: 3;
+}
+
+.craft-module path {
+  fill: none;
+  stroke: var(--surface);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.craft-tool path {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.craft-tool path:nth-child(2) {
+  fill: var(--primary);
+  stroke-width: 4;
+}
+
+.craft-workbench rect {
+  fill: var(--text);
+}
+
+.craft-workbench path {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.craft-workbench circle,
+.craft-share circle {
+  fill: var(--primary);
+  stroke: var(--surface);
+  stroke-width: 3;
+}
+
+@media (max-width: 760px) {
+  .hero-craft { min-height: 230px; }
+}
+
+@media (max-width: 420px) {
+  .hero-craft { min-height: 190px; }
+}
+
+@media (forced-colors: active) {
+  .hero-craft path,
+  .hero-craft circle,
+  .hero-craft rect {
+    forced-color-adjust: auto;
+  }
+}
