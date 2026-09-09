@@ -1,44 +1,12 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "organization": "SupraCraft",
   "canonical_hub": "https://supracraft.github.io/",
   "github_organization": "https://github.com/SupraCraft",
+  "public_repository_catalog": "https://github.com/orgs/SupraCraft/repositories",
   "tagline": "Shared craftsmanship, different worlds.",
-  "interaction_contract": {
-    "theme_storage_key": "supracraft-theme",
-    "theme_values": [
-      "system",
-      "light",
-      "dark"
-    ],
-    "navigation_scopes": {
-      "project_internal": {
-        "behavior": "same-context",
-        "description": "Navigation within the active project's approved public-surface base path."
-      },
-      "organization_internal": {
-        "behavior": "same-context",
-        "description": "Navigation among SupraCraft-owned surfaces on supracraft.github.io, including the organization hub and sibling project sites."
-      },
-      "external_handoff": {
-        "behavior": "new-context",
-        "requires_visible_indicator": true,
-        "requires_accessible_notification": true,
-        "rel": [
-          "noopener",
-          "noreferrer"
-        ]
-      }
-    },
-    "product_header_model": "organization-home / product-home + product-local primary navigation"
-  },
-  "discovery": {
-    "authoritative_repository_fallback": "https://github.com/orgs/SupraCraft/repositories",
-    "progressive_enhancement_api": "https://api.github.com/orgs/SupraCraft/repos?type=public&sort=full_name&per_page=100",
-    "private_credentials_required": false
-  },
-  "independence": {
-    "product_sites_require_hub_runtime_assets": false,
-    "hub_requires_product_runtime_assets": false
+  "resources": {
+    "surface": "https://supracraft.github.io/surface.json",
+    "agent_orientation": "https://supracraft.github.io/llms.txt"
   }
 }
