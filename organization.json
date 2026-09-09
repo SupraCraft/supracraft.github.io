@@ -5,6 +5,7 @@
   "github_organization": "https://github.com/SupraCraft",
   "public_repository_catalog": "https://github.com/orgs/SupraCraft/repositories",
   "tagline": "Shared craftsmanship, different worlds.",
+  "purpose": "Open-source games, modding tools, creative-play projects, and hobby software.",
   "resources": {
     "surface": "https://supracraft.github.io/surface.json",
     "agent_orientation": "https://supracraft.github.io/llms.txt"
