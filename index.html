@@ -48,10 +48,65 @@
         </a>
       </div>
     </div>
-    <div class="hero-structure" aria-hidden="true">
-      <span class="beam beam-a"></span><span class="joint joint-a"></span>
-      <span class="beam beam-b"></span><span class="joint joint-b"></span>
-      <span class="beam beam-c"></span><span class="joint joint-c"></span>
+    <div class="hero-structure">
+      <svg class="hero-craft" viewBox="0 0 480 360" role="img" aria-labelledby="hero-craft-title hero-craft-desc">
+        <title id="hero-craft-title">Shared craft for humans, automation, and agents</title>
+        <desc id="hero-craft-desc">A modular component is built on a workbench and connected outward to a person, an automated process, and an agent network.</desc>
+
+        <g class="craft-connections" aria-hidden="true">
+          <path d="M214 178 C175 154 154 132 126 112" />
+          <path d="M266 178 C305 154 326 132 354 112" />
+          <path d="M240 156 C240 128 240 108 240 82" />
+        </g>
+
+        <g class="craft-human" aria-hidden="true">
+          <circle cx="108" cy="92" r="16" />
+          <path d="M80 142 C84 116 94 108 108 108 C122 108 132 116 136 142" />
+          <path d="M91 128 L73 151 M125 128 L143 151" />
+        </g>
+
+        <g class="craft-agent" aria-hidden="true">
+          <circle cx="240" cy="48" r="10" />
+          <circle cx="211" cy="69" r="8" />
+          <circle cx="269" cy="69" r="8" />
+          <path d="M232 55 L218 64 M248 55 L262 64 M219 72 L232 78 M261 72 L248 78" />
+          <circle cx="240" cy="82" r="8" />
+        </g>
+
+        <g class="craft-automation" aria-hidden="true">
+          <circle cx="372" cy="98" r="24" />
+          <circle cx="372" cy="98" r="8" />
+          <path d="M372 62 V72 M372 124 V134 M336 98 H346 M398 98 H408 M347 73 L354 80 M390 116 L397 123 M347 123 L354 116 M390 80 L397 73" />
+        </g>
+
+        <g class="craft-module" aria-hidden="true">
+          <rect x="190" y="156" width="44" height="44" rx="7" />
+          <rect x="246" y="156" width="44" height="44" rx="7" />
+          <rect x="218" y="204" width="44" height="44" rx="7" />
+          <path d="M234 178 H246 M240 200 V204" />
+        </g>
+
+        <g class="craft-tool" aria-hidden="true">
+          <path d="M142 230 L201 193" />
+          <path d="M128 218 L149 206 L160 223 L139 235 Z" />
+          <path d="M195 188 L207 207" />
+        </g>
+
+        <g class="craft-workbench" aria-hidden="true">
+          <rect x="66" y="252" width="348" height="18" rx="9" />
+          <path d="M104 270 L88 326 M376 270 L392 326" />
+          <path d="M91 307 H389" />
+          <circle cx="146" cy="261" r="4" />
+          <circle cx="334" cy="261" r="4" />
+        </g>
+
+        <g class="craft-share" aria-hidden="true">
+          <path d="M186 224 H158 C145 224 137 214 137 202 V182" />
+          <path d="M294 224 H322 C335 224 343 214 343 202 V182" />
+          <circle cx="137" cy="174" r="5" />
+          <circle cx="343" cy="174" r="5" />
+        </g>
+      </svg>
     </div>
   </section>
 
