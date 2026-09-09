@@ -9,6 +9,7 @@ PUBLIC_FILES = [
     ROOT / '404.html',
     ROOT / 'accessibility/index.html',
     ROOT / 'assets/site.css',
+    ROOT / 'assets/hero-craft.css',
     ROOT / 'assets/site.js',
     ROOT / 'organization.json',
     ROOT / 'surface.json',
@@ -87,6 +88,21 @@ if 'class="accessibility-disclosure"' not in index:
     errors.append('index.html must retain a compact secondary accessibility disclosure')
 if '<link rel="describedby" href="/surface.json"' not in index:
     errors.append('index.html must retain non-visual machine discovery metadata')
+
+# The hero must communicate the organization metaphor rather than being unexplained decoration.
+for required in (
+    'class="hero-craft"',
+    'role="img"',
+    '<title id="hero-craft-title">Shared craft for humans, automation, and agents</title>',
+    'class="craft-human"',
+    'class="craft-agent"',
+    'class="craft-automation"',
+    'class="craft-module"',
+    'class="craft-tool"',
+    'class="craft-workbench"',
+):
+    if required not in index:
+        errors.append(f'hero semantic element missing: {required}')
 
 private_name_pattern = re.compile(r'(?i)\b[a-z0-9_.-]+-private\b')
 for path in PUBLIC_FILES:
