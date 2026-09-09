@@ -1,25 +1,24 @@
 {
-  "schema_version": "1.0.0",
-  "production_base_url": "https://supracraft.github.io/",
+  "schema_version": "1.1.0",
+  "canonical": "https://supracraft.github.io/",
   "routes": [
     {
-      "id": "home",
       "path": "/",
       "title": "SupraCraft · Open-source systems and tooling"
     },
     {
-      "id": "accessibility",
       "path": "/accessibility/",
-      "title": "Accessibility · SupraCraft"
+      "title": "Accessibility · SupraCraft",
+      "secondary": true
     }
   ],
-  "machine_resources": [
-    "/organization.json",
-    "/surface.json",
-    "/llms.txt"
-  ],
-  "external_fallbacks": [
-    "https://github.com/orgs/SupraCraft/repositories",
-    "https://github.com/SupraCraft"
-  ]
+  "machine_resources": {
+    "organization": "/organization.json",
+    "surface": "/surface.json",
+    "agent_orientation": "/llms.txt"
+  },
+  "public_links": {
+    "repositories": "https://github.com/orgs/SupraCraft/repositories",
+    "github_organization": "https://github.com/SupraCraft"
+  }
 }
