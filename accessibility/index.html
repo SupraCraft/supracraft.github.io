@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Accessibility statement and interaction conventions for SupraCraft public web surfaces.">
+  <meta name="description" content="Accessibility statement for SupraCraft public web surfaces.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#E3ECEB" data-effective-theme="light">
   <link rel="canonical" href="https://supracraft.github.io/accessibility/">
-  <link rel="describedby" href="/surface.json">
+  <link rel="describedby" href="/surface.json" type="application/json">
   <link rel="stylesheet" href="/assets/site.css">
   <script src="/assets/site.js" defer></script>
   <title>Accessibility · SupraCraft</title>
@@ -22,7 +22,6 @@
         <div class="nav-links">
           <a href="/#projects">Projects</a>
           <a href="/#about">About</a>
-          <a href="/accessibility/" aria-current="page">Accessibility</a>
         </div>
         <label class="theme-control" for="theme-select"><span>Theme</span>
           <select id="theme-select" aria-label="Color theme">
@@ -37,39 +36,19 @@
 </header>
 
 <main id="main-content" class="shell main prose" tabindex="-1">
-  <div class="eyebrow">Public web baseline</div>
-  <h1>Accessibility</h1>
-  <p class="lede">SupraCraft public sites are designed to remain understandable and operable across keyboard, touch, assistive technology, zoomed and narrow layouts, and light or dark color preferences.</p>
-
-  <h2>Interaction conventions</h2>
-  <ul>
-    <li>Primary controls use native HTML semantics wherever practical.</li>
-    <li>Keyboard focus remains visible and a skip link reaches main content.</li>
-    <li>System, Light, and Dark themes preserve the same functional semantics.</li>
-    <li>Essential state is expressed in text rather than color or artwork alone.</li>
-    <li>External destinations are visibly marked and announce that they open in a new browsing context.</li>
-    <li>Navigation among SupraCraft-owned sites remains normal same-tab navigation so browser history continues to work naturally.</li>
-  </ul>
-
-  <h2>Progressive enhancement</h2>
-  <p>Core content and project entry points remain available without JavaScript. JavaScript enhances theme controls and public repository metadata, but does not provide the only path to essential information.</p>
-
-  <h2>Automated qualification</h2>
-  <p>The organization hub is checked in multiple browser engines for accessibility, keyboard behavior, responsive reflow, theme behavior, navigation semantics, link integrity, and performance budgets before normal publication.</p>
-
+  <div class="eyebrow">Accessibility</div>
+  <h1>Designed to be usable by more people.</h1>
+  <p class="lede">SupraCraft public sites are designed to work with keyboard navigation, assistive technology, zoomed and narrow layouts, and system light or dark preferences.</p>
+  <p>If something gets in your way, report it in the relevant project's public repository so it can be corrected.</p>
   <p><a class="button" href="/">Return to SupraCraft</a></p>
 </main>
 
 <footer class="site-footer">
   <div class="shell footer-row">
     <span>SupraCraft · Shared craftsmanship, different worlds.</span>
-    <span>
-      <a href="/accessibility/" aria-current="page">Accessibility</a>
-      <span aria-hidden="true"> · </span>
-      <a class="external-link" href="https://github.com/SupraCraft" target="_blank" rel="noopener noreferrer">
-        GitHub <span class="external-link-indicator" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab or window)</span>
-      </a>
-    </span>
+    <a class="external-link" href="https://github.com/SupraCraft" target="_blank" rel="noopener noreferrer">
+      GitHub <span class="external-link-indicator" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab or window)</span>
+    </a>
   </div>
 </footer>
 </body>
