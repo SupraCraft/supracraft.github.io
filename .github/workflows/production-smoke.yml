@@ -48,10 +48,17 @@ jobs:
             test -s /tmp/supracraft-smoke-body
           done
 
-      - name: Verify deployed identity and machine contracts
+      - name: Verify deployed human and machine surfaces
         shell: bash
         run: |
           set -euo pipefail
-          curl --fail --silent --show-error --location https://supracraft.github.io/ | grep -F 'Shared craftsmanship'
-          curl --fail --silent --show-error --location https://supracraft.github.io/organization.json | python3 -c "import json,sys; d=json.load(sys.stdin); assert d['organization']=='SupraCraft'; assert d['canonical_hub']=='https://supracraft.github.io/'; assert d['discovery']['private_credentials_required'] is False"
-          curl --fail --silent --show-error --location https://supracraft.github.io/surface.json | python3 -c "import json,sys; d=json.load(sys.stdin); assert d['production_base_url']=='https://supracraft.github.io/'"
+
+          homepage="$(curl --fail --silent --show-error --location https://supracraft.github.io/)"
+          grep -F 'Shared craftsmanship' <<<"$homepage"
+          ! grep -F 'For tools and automation' <<<"$homepage"
+          ! grep -F "GitHub's public API" <<<"$homepage"
+          ! grep -F 'without JavaScript' <<<"$homepage"
+
+          curl --fail --silent --show-error --location https://supracraft.github.io/organization.json | python3 -c "import json,sys; d=json.load(sys.stdin); assert d['organization']=='SupraCraft'; assert d['canonical_hub']=='https://supracraft.github.io/'; assert d['public_repository_catalog']=='https://github.com/orgs/SupraCraft/repositories'; assert d['resources']['surface']=='https://supracraft.github.io/surface.json'; assert d['resources']['agent_orientation']=='https://supracraft.github.io/llms.txt'"
+
+          curl --fail --silent --show-error --location https://supracraft.github.io/surface.json | python3 -c "import json,sys; d=json.load(sys.stdin); assert d['canonical']=='https://supracraft.github.io/'; routes={r['path']:r for r in d['routes']}; assert '/' in routes; assert routes['/accessibility/']['secondary'] is True; assert d['machine_resources']=={'organization':'/organization.json','surface':'/surface.json','agent_orientation':'/llms.txt'}"
