@@ -1,6 +1,6 @@
 # SupraCraft
 
-SupraCraft maintains open-source systems and tooling across developer tooling, server tooling, infrastructure, and related domains.
+SupraCraft maintains open-source games, modding tools, creative-play projects, and hobby software.
 
 - Hub: https://supracraft.github.io/
 - GitHub organization: https://github.com/SupraCraft
