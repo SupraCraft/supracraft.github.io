@@ -83,7 +83,53 @@ for (const route of routes) {
   });
 }
 
-test('public repository discovery progressively enhances without private authority', async ({ page }) => {
+test('human homepage keeps implementation and machine orientation out of the normal UI', async ({ page }) => {
+  await page.route('https://api.github.com/**', route => route.abort());
+  await page.goto(routeUrl('/'), { waitUntil: 'networkidle' });
+
+  await expect(page.locator('nav[aria-label="Primary"] a[href="/accessibility/"]')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'For tools and automation' })).toHaveCount(0);
+  await expect(page.locator('main a[href="/organization.json"], main a[href="/surface.json"], main a[href="/llms.txt"]')).toHaveCount(0);
+  await expect(page.locator('head link[rel="describedby"][href="/surface.json"]')).toHaveCount(1);
+
+  const text = (await page.locator('body').innerText()).toLowerCase();
+  for (const phrase of [
+    'without javascript',
+    "github's public api",
+    'interaction grammar',
+    'release lifecycle',
+    'task flows',
+    'same-tab navigation',
+    'external handoff',
+    'automated qualification',
+    'performance budgets',
+  ]) {
+    expect(text).not.toContain(phrase);
+  }
+
+  const disclosure = page.locator('details.accessibility-disclosure');
+  await expect(disclosure).toHaveCount(1);
+  await expect(disclosure).not.toHaveAttribute('open', '');
+  await expect(disclosure.getByText('Accessibility', { exact: true })).toBeVisible();
+});
+
+test('hero explains shared craft and actor enablement', async ({ page }) => {
+  await page.route('https://api.github.com/**', route => route.abort());
+  await page.goto(routeUrl('/'), { waitUntil: 'networkidle' });
+
+  const hero = page.locator('svg.hero-craft');
+  await expect(hero).toHaveCount(1);
+  await expect(hero).toHaveAttribute('role', 'img');
+  await expect(hero.locator('title')).toHaveText('Shared craft for humans, automation, and agents');
+  await expect(hero.locator('.craft-human')).toHaveCount(1);
+  await expect(hero.locator('.craft-automation')).toHaveCount(1);
+  await expect(hero.locator('.craft-agent')).toHaveCount(1);
+  await expect(hero.locator('.craft-module')).toHaveCount(1);
+  await expect(hero.locator('.craft-tool')).toHaveCount(1);
+  await expect(hero.locator('.craft-workbench')).toHaveCount(1);
+});
+
+test('public repository discovery refreshes the catalog when public metadata is available', async ({ page }) => {
   await page.route('https://api.github.com/orgs/SupraCraft/repos**', async route => {
     await route.fulfill({
       contentType: 'application/json',
@@ -103,17 +149,17 @@ test('public repository discovery progressively enhances without private authori
   const featuredBridgeSite = page.locator('[data-project="Bridge"] [data-live-project-site]');
   await expect(featuredBridgeSite).toHaveAttribute('href', 'https://supracraft.github.io/Bridge/');
   await expect(featuredBridgeSite).not.toHaveAttribute('target', '_blank');
-  await expect(page.getByText('2 current public repositories')).toBeVisible();
+  await expect(page.getByText('2 public repositories')).toBeVisible();
   await assertLinkScopes(page, 'enhanced discovery');
 });
 
-test('GitHub API failure preserves static product discovery and native fallback', async ({ page }) => {
+test('repository refresh failure remains quiet and preserves useful static paths', async ({ page }) => {
   await page.route('https://api.github.com/**', route => route.abort());
   await page.goto(routeUrl('/'), { waitUntil: 'networkidle' });
   await expect(page.locator('[data-project="Bridge"]')).toBeVisible();
   await expect(page.locator('[data-project="VanillaCord"]')).toBeVisible();
-  await expect(page.getByText(/Live metadata unavailable/)).toBeVisible();
-  await expect(page.getByRole('link', { name: /Browse the authoritative repository list on GitHub/ })).toBeVisible();
+  await expect(page.locator('#repository-status')).toHaveText('');
+  await expect(page.getByRole('link', { name: /Browse all repositories on GitHub/ })).toBeVisible();
 });
 
 test('theme choice persists across organization routes', async ({ page }) => {
@@ -132,7 +178,7 @@ test('320px reflow keeps navigation and primary controls usable', async ({ page 
   for (const route of routes) {
     await page.goto(routeUrl(route), { waitUntil: 'networkidle' });
     await assertNoHorizontalOverflow(page, `320px ${route}`);
-    const controls = page.locator('nav[aria-label="Primary"] a, .theme-option, a.button');
+    const controls = page.locator('nav[aria-label="Primary"] a, .theme-option, a.button, summary');
     const boxes = await controls.evaluateAll(nodes => nodes.map(node => {
       const rect = node.getBoundingClientRect();
       return { width: rect.width, height: rect.height };
