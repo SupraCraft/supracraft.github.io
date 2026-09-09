@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="SupraCraft open-source projects: shared craftsmanship across developer tooling, server tooling, infrastructure, and other domains.">
+  <meta name="description" content="SupraCraft open-source projects across developer tooling, server tooling, infrastructure, and related domains.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#E3ECEB" data-effective-theme="light">
   <link rel="canonical" href="https://supracraft.github.io/">
-  <link rel="describedby" href="/surface.json">
+  <link rel="describedby" href="/surface.json" type="application/json">
   <link rel="stylesheet" href="/assets/site.css">
   <script src="/assets/site.js" defer></script>
   <title>SupraCraft · Open-source systems and tooling</title>
@@ -22,7 +22,6 @@
         <div class="nav-links">
           <a href="#projects">Projects</a>
           <a href="#about">About</a>
-          <a href="/accessibility/">Accessibility</a>
         </div>
         <label class="theme-control" for="theme-select"><span>Theme</span>
           <select id="theme-select" aria-label="Color theme">
@@ -41,7 +40,7 @@
     <div>
       <div class="eyebrow">Open-source systems and tooling</div>
       <h1>Shared craftsmanship,<br>different worlds.</h1>
-      <p class="lede">SupraCraft maintains public tools and infrastructure with clear interfaces, reproducible releases, accessible documentation, and project identities shaped by their domains.</p>
+      <p class="lede">SupraCraft builds and maintains open-source tools across developer tooling, server tooling, infrastructure, and related domains.</p>
       <div class="actions">
         <a class="button primary" href="#projects">Explore projects</a>
         <a class="button external-link" href="https://github.com/orgs/SupraCraft/repositories" target="_blank" rel="noopener noreferrer">
@@ -62,7 +61,6 @@
         <div class="eyebrow">Public work</div>
         <h2 id="projects-heading">Projects</h2>
       </div>
-      <p class="quiet">The cards below remain useful without JavaScript. When GitHub's public API is available, the repository list is refreshed in place from public metadata.</p>
     </div>
 
     <div class="cards featured-grid" aria-label="Featured projects">
@@ -92,14 +90,12 @@
     <div class="repo-browser">
       <div class="repo-browser-heading">
         <h3>All public repositories</h3>
-        <span id="repository-status" class="quiet" role="status" aria-live="polite">Loading current public metadata…</span>
+        <span id="repository-status" class="quiet" role="status" aria-live="polite"></span>
       </div>
-      <div id="repository-list" class="repo-list" data-repository-list>
-        <p class="quiet">Live repository metadata requires JavaScript and access to GitHub's public API.</p>
-      </div>
+      <div id="repository-list" class="repo-list" data-repository-list></div>
       <p class="fallback">
         <a class="external-link" href="https://github.com/orgs/SupraCraft/repositories" target="_blank" rel="noopener noreferrer">
-          Browse the authoritative repository list on GitHub <span class="external-link-indicator" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab or window)</span>
+          Browse all repositories on GitHub <span class="external-link-indicator" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab or window)</span>
         </a>
       </p>
     </div>
@@ -107,22 +103,12 @@
 
   <section id="about" class="section split" aria-labelledby="about-heading">
     <div>
-      <div class="eyebrow">How the portfolio fits together</div>
-      <h2 id="about-heading">One organization, independent products.</h2>
+      <div class="eyebrow">About SupraCraft</div>
+      <h2 id="about-heading">Independent projects, one organization.</h2>
     </div>
     <div>
-      <p>SupraCraft provides a consistent interaction grammar and quality baseline without forcing every project into the same visual metaphor or release lifecycle.</p>
-      <p>Each product site owns its task flows and can operate independently. A lightweight SupraCraft link connects each product back to this hub; organization-owned sibling sites use normal same-tab navigation, while true external handoffs are visibly marked.</p>
-    </div>
-  </section>
-
-  <section class="section machine" aria-labelledby="machine-heading">
-    <h2 id="machine-heading">For tools and automation</h2>
-    <p class="quiet">Stable public interfaces describe the organization surface and navigation contract without requiring page scraping.</p>
-    <div class="link-list">
-      <a href="/organization.json">organization.json</a>
-      <a href="/surface.json">surface.json</a>
-      <a href="/llms.txt">llms.txt</a>
+      <p>SupraCraft is a home for open-source projects across several technical domains. Each project keeps its own documentation, releases, and identity.</p>
+      <p>Use this hub to find a project, then follow its project site or source repository for details.</p>
     </div>
   </section>
 </main>
@@ -130,13 +116,15 @@
 <footer class="site-footer">
   <div class="shell footer-row">
     <span>SupraCraft · Shared craftsmanship, different worlds.</span>
-    <span>
-      <a href="/accessibility/">Accessibility</a>
-      <span aria-hidden="true"> · </span>
+    <div class="footer-actions">
+      <details class="accessibility-disclosure">
+        <summary>Accessibility</summary>
+        <p>SupraCraft sites are designed for keyboard use, assistive technology, zoom, and light or dark preferences. <a href="/accessibility/">Details</a></p>
+      </details>
       <a class="external-link" href="https://github.com/SupraCraft" target="_blank" rel="noopener noreferrer">
         GitHub <span class="external-link-indicator" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab or window)</span>
       </a>
-    </span>
+    </div>
   </div>
 </footer>
 </body>
