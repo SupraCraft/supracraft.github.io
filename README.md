@@ -1,13 +1,10 @@
 # SupraCraft organization hub
 
-This repository is the public source for <https://supracraft.github.io/>.
+Public source for the [SupraCraft project hub](https://supracraft.github.io/).
 
-The hub is intentionally a thin, independently deployable static site:
+The hub helps people find SupraCraft projects across different technical domains. Individual projects own their documentation, releases, and project-specific information.
 
-- organization orientation and public project discovery live here;
-- product-specific documentation and task flows remain in each product's public repository;
-- project discovery progressively enhances from GitHub's public API and always retains a native GitHub repository-list fallback;
-- the site has no runtime dependency on private repositories or private credentials;
-- public-site qualification runs entirely on public-safe GitHub Actions.
+For the organization and its repositories, see:
 
-The shared interaction grammar is versioned as public machine-readable metadata in `organization.json`. Product sites may vendor compatible snapshots while remaining independently operable.
+- [SupraCraft project hub](https://supracraft.github.io/)
+- [SupraCraft on GitHub](https://github.com/SupraCraft)
