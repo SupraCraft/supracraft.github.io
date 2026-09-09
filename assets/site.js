@@ -198,7 +198,7 @@
       const response = await fetch('https://api.github.com/orgs/SupraCraft/repos?type=public&sort=full_name&per_page=100', {
         headers: { Accept: 'application/vnd.github+json' }
       });
-      if (!response.ok) throw new Error(`GitHub API returned ${response.status}`);
+      if (!response.ok) throw new Error(`repository request returned ${response.status}`);
       const repos = await response.json();
       const visible = repos
         .filter(repo => !repo.archived && !['.github', 'supracraft.github.io'].includes(repo.name))
@@ -207,10 +207,10 @@
       list.replaceChildren(...visible.map(repoCard));
       visible.forEach(enhanceFeatured);
       status.textContent = visible.length
-        ? `${visible.length} current public ${visible.length === 1 ? 'repository' : 'repositories'}`
-        : 'No public product repositories are currently listed.';
+        ? `${visible.length} public ${visible.length === 1 ? 'repository' : 'repositories'}`
+        : '';
     } catch (_) {
-      status.textContent = 'Live metadata unavailable; static project links and the GitHub repository list remain available.';
+      status.textContent = '';
     }
   }
 

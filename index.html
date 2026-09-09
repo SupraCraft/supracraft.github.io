@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="SupraCraft open-source projects: shared craftsmanship across developer tooling, server tooling, infrastructure, and other domains.">
+  <meta name="description" content="SupraCraft open-source projects across developer tooling, server tooling, infrastructure, and related domains.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#E3ECEB" data-effective-theme="light">
   <link rel="canonical" href="https://supracraft.github.io/">
-  <link rel="describedby" href="/surface.json">
+  <link rel="describedby" href="/surface.json" type="application/json">
   <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/hero-craft.css">
   <script src="/assets/site.js" defer></script>
   <title>SupraCraft · Open-source systems and tooling</title>
 </head>
@@ -22,7 +23,6 @@
         <div class="nav-links">
           <a href="#projects">Projects</a>
           <a href="#about">About</a>
-          <a href="/accessibility/">Accessibility</a>
         </div>
         <label class="theme-control" for="theme-select"><span>Theme</span>
           <select id="theme-select" aria-label="Color theme">
@@ -41,7 +41,7 @@
     <div>
       <div class="eyebrow">Open-source systems and tooling</div>
       <h1>Shared craftsmanship,<br>different worlds.</h1>
-      <p class="lede">SupraCraft maintains public tools and infrastructure with clear interfaces, reproducible releases, accessible documentation, and project identities shaped by their domains.</p>
+      <p class="lede">SupraCraft builds and maintains open-source tools across developer tooling, server tooling, infrastructure, and related domains.</p>
       <div class="actions">
         <a class="button primary" href="#projects">Explore projects</a>
         <a class="button external-link" href="https://github.com/orgs/SupraCraft/repositories" target="_blank" rel="noopener noreferrer">
@@ -49,10 +49,65 @@
         </a>
       </div>
     </div>
-    <div class="hero-structure" aria-hidden="true">
-      <span class="beam beam-a"></span><span class="joint joint-a"></span>
-      <span class="beam beam-b"></span><span class="joint joint-b"></span>
-      <span class="beam beam-c"></span><span class="joint joint-c"></span>
+    <div class="hero-structure">
+      <svg class="hero-craft" viewBox="0 0 480 360" role="img" aria-labelledby="hero-craft-title hero-craft-desc">
+        <title id="hero-craft-title">Shared craft for humans, automation, and agents</title>
+        <desc id="hero-craft-desc">A modular component is built on a workbench and connected outward to a person, an automated process, and an agent network.</desc>
+
+        <g class="craft-connections" aria-hidden="true">
+          <path d="M214 178 C175 154 154 132 126 112" />
+          <path d="M266 178 C305 154 326 132 354 112" />
+          <path d="M240 156 C240 128 240 108 240 82" />
+        </g>
+
+        <g class="craft-human" aria-hidden="true">
+          <circle cx="108" cy="92" r="16" />
+          <path d="M80 142 C84 116 94 108 108 108 C122 108 132 116 136 142" />
+          <path d="M91 128 L73 151 M125 128 L143 151" />
+        </g>
+
+        <g class="craft-agent" aria-hidden="true">
+          <circle cx="240" cy="48" r="10" />
+          <circle cx="211" cy="69" r="8" />
+          <circle cx="269" cy="69" r="8" />
+          <path d="M232 55 L218 64 M248 55 L262 64 M219 72 L232 78 M261 72 L248 78" />
+          <circle cx="240" cy="82" r="8" />
+        </g>
+
+        <g class="craft-automation" aria-hidden="true">
+          <circle cx="372" cy="98" r="24" />
+          <circle cx="372" cy="98" r="8" />
+          <path d="M372 62 V72 M372 124 V134 M336 98 H346 M398 98 H408 M347 73 L354 80 M390 116 L397 123 M347 123 L354 116 M390 80 L397 73" />
+        </g>
+
+        <g class="craft-module" aria-hidden="true">
+          <rect x="190" y="156" width="44" height="44" rx="7" />
+          <rect x="246" y="156" width="44" height="44" rx="7" />
+          <rect x="218" y="204" width="44" height="44" rx="7" />
+          <path d="M234 178 H246 M240 200 V204" />
+        </g>
+
+        <g class="craft-tool" aria-hidden="true">
+          <path d="M142 230 L201 193" />
+          <path d="M128 218 L149 206 L160 223 L139 235 Z" />
+          <path d="M195 188 L207 207" />
+        </g>
+
+        <g class="craft-workbench" aria-hidden="true">
+          <rect x="66" y="252" width="348" height="18" rx="9" />
+          <path d="M104 270 L88 326 M376 270 L392 326" />
+          <path d="M91 307 H389" />
+          <circle cx="146" cy="261" r="4" />
+          <circle cx="334" cy="261" r="4" />
+        </g>
+
+        <g class="craft-share" aria-hidden="true">
+          <path d="M186 224 H158 C145 224 137 214 137 202 V182" />
+          <path d="M294 224 H322 C335 224 343 214 343 202 V182" />
+          <circle cx="137" cy="174" r="5" />
+          <circle cx="343" cy="174" r="5" />
+        </g>
+      </svg>
     </div>
   </section>
 
@@ -62,7 +117,6 @@
         <div class="eyebrow">Public work</div>
         <h2 id="projects-heading">Projects</h2>
       </div>
-      <p class="quiet">The cards below remain useful without JavaScript. When GitHub's public API is available, the repository list is refreshed in place from public metadata.</p>
     </div>
 
     <div class="cards featured-grid" aria-label="Featured projects">
@@ -92,14 +146,12 @@
     <div class="repo-browser">
       <div class="repo-browser-heading">
         <h3>All public repositories</h3>
-        <span id="repository-status" class="quiet" role="status" aria-live="polite">Loading current public metadata…</span>
+        <span id="repository-status" class="quiet" role="status" aria-live="polite"></span>
       </div>
-      <div id="repository-list" class="repo-list" data-repository-list>
-        <p class="quiet">Live repository metadata requires JavaScript and access to GitHub's public API.</p>
-      </div>
+      <div id="repository-list" class="repo-list" data-repository-list></div>
       <p class="fallback">
         <a class="external-link" href="https://github.com/orgs/SupraCraft/repositories" target="_blank" rel="noopener noreferrer">
-          Browse the authoritative repository list on GitHub <span class="external-link-indicator" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab or window)</span>
+          Browse all repositories on GitHub <span class="external-link-indicator" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab or window)</span>
         </a>
       </p>
     </div>
@@ -107,22 +159,12 @@
 
   <section id="about" class="section split" aria-labelledby="about-heading">
     <div>
-      <div class="eyebrow">How the portfolio fits together</div>
-      <h2 id="about-heading">One organization, independent products.</h2>
+      <div class="eyebrow">About SupraCraft</div>
+      <h2 id="about-heading">Independent projects, one organization.</h2>
     </div>
     <div>
-      <p>SupraCraft provides a consistent interaction grammar and quality baseline without forcing every project into the same visual metaphor or release lifecycle.</p>
-      <p>Each product site owns its task flows and can operate independently. A lightweight SupraCraft link connects each product back to this hub; organization-owned sibling sites use normal same-tab navigation, while true external handoffs are visibly marked.</p>
-    </div>
-  </section>
-
-  <section class="section machine" aria-labelledby="machine-heading">
-    <h2 id="machine-heading">For tools and automation</h2>
-    <p class="quiet">Stable public interfaces describe the organization surface and navigation contract without requiring page scraping.</p>
-    <div class="link-list">
-      <a href="/organization.json">organization.json</a>
-      <a href="/surface.json">surface.json</a>
-      <a href="/llms.txt">llms.txt</a>
+      <p>SupraCraft is a home for open-source projects across several technical domains. Each project keeps its own documentation, releases, and identity.</p>
+      <p>Use this hub to find a project, then follow its project site or source repository for details.</p>
     </div>
   </section>
 </main>
@@ -130,13 +172,15 @@
 <footer class="site-footer">
   <div class="shell footer-row">
     <span>SupraCraft · Shared craftsmanship, different worlds.</span>
-    <span>
-      <a href="/accessibility/">Accessibility</a>
-      <span aria-hidden="true"> · </span>
+    <div class="footer-actions">
+      <details class="accessibility-disclosure">
+        <summary>Accessibility</summary>
+        <p>SupraCraft sites are designed for keyboard use, assistive technology, zoom, and light or dark preferences. <a href="/accessibility/">Details</a></p>
+      </details>
       <a class="external-link" href="https://github.com/SupraCraft" target="_blank" rel="noopener noreferrer">
         GitHub <span class="external-link-indicator" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab or window)</span>
       </a>
-    </span>
+    </div>
   </div>
 </footer>
 </body>
