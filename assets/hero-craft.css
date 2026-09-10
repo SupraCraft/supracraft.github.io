@@ -1,127 +1,70 @@
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  margin-right: 10px;
+  flex: 0 0 auto;
+}
+
+.hero-structure {
+  background: var(--surface-soft);
+  border-radius: 22px;
+  box-shadow: none;
+}
+
 .hero-craft {
   display: block;
   width: 100%;
   height: 100%;
   min-height: 330px;
+  object-fit: cover;
 }
 
-.hero-craft path,
-.hero-craft circle,
-.hero-craft rect {
-  vector-effect: non-scaling-stroke;
+.featured-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.craft-connections path,
-.craft-share path {
-  fill: none;
-  stroke: var(--muted);
-  stroke-width: 5;
-  stroke-linecap: round;
+.project-card {
+  position: relative;
+  overflow: hidden;
 }
 
-.craft-human circle,
-.craft-human path {
-  fill: none;
-  stroke: var(--text);
-  stroke-width: 6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.project-mark {
+  display: block;
+  width: 124px;
+  height: 92px;
+  object-fit: contain;
+  object-position: left center;
+  margin: 2px 0 18px;
 }
 
-.craft-agent circle {
-  fill: var(--surface);
-  stroke: #2E7D83;
-  stroke-width: 5;
+.project-card-bridge {
+  border-top: 4px solid #58B9C6;
 }
 
-.craft-agent path {
-  fill: none;
-  stroke: #2E7D83;
-  stroke-width: 4;
-  stroke-linecap: round;
-}
-
-.craft-automation circle {
-  fill: var(--surface);
-  stroke: var(--primary);
-  stroke-width: 6;
-}
-
-.craft-automation path {
-  fill: none;
-  stroke: var(--primary);
-  stroke-width: 6;
-  stroke-linecap: round;
-}
-
-.craft-module rect:nth-of-type(1) {
-  fill: var(--primary);
-  stroke: var(--text);
-  stroke-width: 3;
-}
-
-.craft-module rect:nth-of-type(2) {
-  fill: #2E7D83;
-  stroke: var(--text);
-  stroke-width: 3;
-}
-
-.craft-module rect:nth-of-type(3) {
-  fill: var(--muted);
-  stroke: var(--text);
-  stroke-width: 3;
-}
-
-.craft-module path {
-  fill: none;
-  stroke: var(--surface);
-  stroke-width: 5;
-  stroke-linecap: round;
-}
-
-.craft-tool path {
-  fill: none;
-  stroke: var(--text);
-  stroke-width: 7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.craft-tool path:nth-child(2) {
-  fill: var(--primary);
-  stroke-width: 4;
-}
-
-.craft-workbench rect {
-  fill: var(--text);
-}
-
-.craft-workbench path {
-  fill: none;
-  stroke: var(--text);
-  stroke-width: 8;
-  stroke-linecap: round;
-}
-
-.craft-workbench circle,
-.craft-share circle {
-  fill: var(--primary);
-  stroke: var(--surface);
-  stroke-width: 3;
+.project-card-vanillacord {
+  border-top: 4px solid #B86B3F;
 }
 
 @media (max-width: 760px) {
   .hero-craft { min-height: 230px; }
+  .featured-grid { grid-template-columns: 1fr; }
+  .project-mark { width: 112px; height: 82px; }
 }
 
 @media (max-width: 420px) {
   .hero-craft { min-height: 190px; }
+  .project-mark { width: 100px; height: 74px; }
 }
 
 @media (forced-colors: active) {
-  .hero-craft path,
-  .hero-craft circle,
-  .hero-craft rect {
+  .hero-craft,
+  .brand-mark,
+  .project-mark {
     forced-color-adjust: auto;
+  }
+
+  .project-card-bridge,
+  .project-card-vanillacord {
+    border-top-color: CanvasText;
   }
 }
