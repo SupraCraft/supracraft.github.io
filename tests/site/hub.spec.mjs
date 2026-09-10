@@ -133,7 +133,7 @@ test('core identity remains understandable when decorative and brand images do n
   await page.goto(routeUrl('/'), { waitUntil: 'networkidle' });
 
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Shared craftsmanship');
-  await expect(page.getByRole('heading', { level: 2, name: 'Projects' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Projects', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { level: 3, name: 'Bridge' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 3, name: 'VanillaCord' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 2, name: /workbench is shared/i })).toBeVisible();
@@ -157,7 +157,7 @@ test('public repository discovery refreshes the catalog when public metadata is 
   await expect(page.locator('.repo-item')).toHaveCount(2);
   await expect(page.locator('.repo-item').filter({ hasText: 'Bridge' }).getByRole('link', { name: 'Project site' })).toHaveAttribute('href', 'https://supracraft.github.io/Bridge/');
   const featuredBridgeSite = page.locator('[data-project="Bridge"] [data-live-project-site]');
-  await expect(featuredBridgeSite).toHaveAttribute('href', 'https://supracraft.github.io/Bridge/');
+  await expect(featuredBridgeSite).toHaveAttribute('href', '/Bridge/');
   await expect(featuredBridgeSite).not.toHaveAttribute('target', '_blank');
   await expect(page.getByText('2 public repositories')).toBeVisible();
   await assertLinkScopes(page, 'enhanced discovery');
@@ -208,7 +208,7 @@ test('print projection keeps content and removes interactive site chrome', async
   await expect(page.locator('.hero-structure')).toBeHidden();
   await expect(page.locator('.repo-browser')).toBeHidden();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.getByRole('heading', { level: 2, name: 'Projects' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Projects', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { level: 3, name: 'Bridge' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 3, name: 'VanillaCord' })).toBeVisible();
 });
