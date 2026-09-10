@@ -27,6 +27,7 @@ org = json.loads((ROOT / 'organization.json').read_text(encoding='utf-8'))
 surface = json.loads((ROOT / 'surface.json').read_text(encoding='utf-8'))
 index = (ROOT / 'index.html').read_text(encoding='utf-8')
 accessibility = (ROOT / 'accessibility/index.html').read_text(encoding='utf-8')
+site_css = (ROOT / 'assets/site.css').read_text(encoding='utf-8')
 
 if org.get('canonical_hub') != 'https://supracraft.github.io/':
     errors.append('organization.json canonical_hub is not canonical')
@@ -89,20 +90,37 @@ if 'class="accessibility-disclosure"' not in index:
 if '<link rel="describedby" href="/surface.json"' not in index:
     errors.append('index.html must retain non-visual machine discovery metadata')
 
-# The hero must communicate the organization metaphor rather than being unexplained decoration.
-for required in (
-    'class="hero-craft"',
-    'role="img"',
-    '<title id="hero-craft-title">Shared craft for humans, automation, and agents</title>',
-    'class="craft-human"',
-    'class="craft-agent"',
-    'class="craft-automation"',
-    'class="craft-module"',
-    'class="craft-tool"',
-    'class="craft-workbench"',
+# The current organization hero is an ordinary image whose alt text carries the
+# same workbench/vise metaphor as the visible artwork. Keep this contract tied
+# to meaning, not to obsolete SVG-internal classes from previous hero concepts.
+hero_match = re.search(r'<img\b[^>]*class="hero-craft"[^>]*>', index)
+if not hero_match:
+    errors.append('current workbench hero image missing')
+else:
+    hero_tag = hero_match.group(0)
+    if 'src="/assets/brand/supracraft-hero.svg"' not in hero_tag:
+        errors.append('workbench hero must use the canonical organization hero asset')
+    alt_match = re.search(r'alt="([^"]+)"', hero_tag)
+    alt = alt_match.group(1).lower() if alt_match else ''
+    if not alt or 'precision workbench' not in alt or 'vise' not in alt:
+        errors.append('workbench hero alt text must communicate the precision workbench/vise metaphor')
+
+# The human copy must independently carry the core identity if artwork is not rendered.
+for phrase in ('Shared craftsmanship', 'The workbench is shared. The projects are their own worlds.'):
+    if phrase not in index:
+        errors.append(f'human copy missing organization identity phrase: {phrase}')
+
+# Keep low-cost native environment accommodations in the normal CSS rather than
+# growing a separate settings framework. Browser-level behavior is exercised by
+# Playwright where portable emulation exists; these checks prevent silent removal.
+for marker in (
+    '@media (prefers-reduced-motion: reduce)',
+    '@media (prefers-contrast: more)',
+    '@media (forced-colors: active)',
+    '@media print',
 ):
-    if required not in index:
-        errors.append(f'hero semantic element missing: {required}')
+    if marker not in site_css:
+        errors.append(f'native environment accommodation missing from site.css: {marker}')
 
 private_name_pattern = re.compile(r'(?i)\b[a-z0-9_.-]+-private\b')
 for path in PUBLIC_FILES:
