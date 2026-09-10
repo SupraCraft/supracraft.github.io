@@ -27,6 +27,7 @@ org = json.loads((ROOT / 'organization.json').read_text(encoding='utf-8'))
 surface = json.loads((ROOT / 'surface.json').read_text(encoding='utf-8'))
 index = (ROOT / 'index.html').read_text(encoding='utf-8')
 accessibility = (ROOT / 'accessibility/index.html').read_text(encoding='utf-8')
+site_css = (ROOT / 'assets/site.css').read_text(encoding='utf-8')
 
 if org.get('canonical_hub') != 'https://supracraft.github.io/':
     errors.append('organization.json canonical_hub is not canonical')
@@ -108,6 +109,18 @@ else:
 for phrase in ('Shared craftsmanship', 'The workbench is shared. The projects are their own worlds.'):
     if phrase not in index:
         errors.append(f'human copy missing organization identity phrase: {phrase}')
+
+# Keep low-cost native environment accommodations in the normal CSS rather than
+# growing a separate settings framework. Browser-level behavior is exercised by
+# Playwright where portable emulation exists; these checks prevent silent removal.
+for marker in (
+    '@media (prefers-reduced-motion: reduce)',
+    '@media (prefers-contrast: more)',
+    '@media (forced-colors: active)',
+    '@media print',
+):
+    if marker not in site_css:
+        errors.append(f'native environment accommodation missing from site.css: {marker}')
 
 private_name_pattern = re.compile(r'(?i)\b[a-z0-9_.-]+-private\b')
 for path in PUBLIC_FILES:
