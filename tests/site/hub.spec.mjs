@@ -113,20 +113,30 @@ test('human homepage keeps implementation and machine orientation out of the nor
   await expect(disclosure.getByText('Accessibility', { exact: true })).toBeVisible();
 });
 
-test('hero explains shared craft and actor enablement', async ({ page }) => {
+test('hero and compact mark use the current workbench identity without owning the meaning', async ({ page }) => {
   await page.route('https://api.github.com/**', route => route.abort());
   await page.goto(routeUrl('/'), { waitUntil: 'networkidle' });
 
-  const hero = page.locator('svg.hero-craft');
+  const hero = page.locator('img.hero-craft');
   await expect(hero).toHaveCount(1);
-  await expect(hero).toHaveAttribute('role', 'img');
-  await expect(hero.locator('title')).toHaveText('Shared craft for humans, automation, and agents');
-  await expect(hero.locator('.craft-human')).toHaveCount(1);
-  await expect(hero.locator('.craft-automation')).toHaveCount(1);
-  await expect(hero.locator('.craft-agent')).toHaveCount(1);
-  await expect(hero.locator('.craft-module')).toHaveCount(1);
-  await expect(hero.locator('.craft-tool')).toHaveCount(1);
-  await expect(hero.locator('.craft-workbench')).toHaveCount(1);
+  await expect(hero).toHaveAttribute('src', '/assets/brand/supracraft-hero.svg');
+  await expect(hero).toHaveAttribute('alt', /precision workbench.*vise/i);
+  await expect(page.locator('img.brand-mark')).toHaveAttribute('src', '/assets/brand/supracraft-icon.svg');
+
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Shared craftsmanship');
+  await expect(page.getByRole('heading', { level: 2, name: /workbench is shared/i })).toBeVisible();
+});
+
+test('core identity remains understandable when decorative and brand images do not load', async ({ page }) => {
+  await page.route('**/*.svg', route => route.abort());
+  await page.route('https://api.github.com/**', route => route.abort());
+  await page.goto(routeUrl('/'), { waitUntil: 'networkidle' });
+
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Shared craftsmanship');
+  await expect(page.getByRole('heading', { level: 2, name: 'Projects' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 3, name: 'Bridge' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 3, name: 'VanillaCord' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: /workbench is shared/i })).toBeVisible();
 });
 
 test('public repository discovery refreshes the catalog when public metadata is available', async ({ page }) => {
@@ -170,6 +180,37 @@ test('theme choice persists across organization routes', async ({ page }) => {
   await page.goto(routeUrl('/accessibility/'));
   await expect(page.getByRole('radio', { name: 'Dark' })).toBeChecked();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+});
+
+test('system color and reduced-motion preferences are honored silently', async ({ page }) => {
+  await page.route('https://api.github.com/**', route => route.abort());
+  await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
+  await page.goto(routeUrl('/'), { waitUntil: 'networkidle' });
+
+  await expect(page.getByRole('radio', { name: 'System' })).toBeChecked();
+  const state = await page.evaluate(() => ({
+    explicitTheme: document.documentElement.dataset.theme || '',
+    background: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(),
+    scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
+  }));
+  expect(state.explicitTheme).toBe('');
+  expect(state.background.toLowerCase()).toBe('#0f1719');
+  expect(state.scrollBehavior).toBe('auto');
+});
+
+test('print projection keeps content and removes interactive site chrome', async ({ page }) => {
+  await page.route('https://api.github.com/**', route => route.abort());
+  await page.goto(routeUrl('/'), { waitUntil: 'networkidle' });
+  await page.emulateMedia({ media: 'print' });
+
+  await expect(page.locator('.site-header')).toBeHidden();
+  await expect(page.locator('.site-footer')).toBeHidden();
+  await expect(page.locator('.hero-structure')).toBeHidden();
+  await expect(page.locator('.repo-browser')).toBeHidden();
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Projects' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 3, name: 'Bridge' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 3, name: 'VanillaCord' })).toBeVisible();
 });
 
 test('320px reflow keeps navigation and primary controls usable', async ({ page }) => {
